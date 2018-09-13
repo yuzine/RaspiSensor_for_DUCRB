@@ -13,12 +13,12 @@ DEV_UCODE = ""
 HEADERS = {'Content-type': 'application/json'}
 
 def getRaspiInfo():
-    url = SERVER + "/api/" + DEV_UCODE + "/raspiinfo/"
+    url = SERVER + "/api/" + DEV_UCODE + "/raspberrypi/info/"
     r = requests.get(url=url)
     return r.json()
 
 def postRaspiIpaddress():
-    url = SERVER + "/api/raspiipaddress/"
+    url = SERVER + "/api/raspberrypi/ipaddress/"
     ip = ipget.ipget()
     ipaddress = ip.ipaddr("wlan0")
 
@@ -43,7 +43,7 @@ def postData(infoList):
     print("pres = %f" % pressure)
     """
 
-    url = SERVER + "/api/koshizuka-lab/raspisensorstate/"
+    url = SERVER + "/api/koshizuka-lab/raspberrypi/sensorstate/"
         
     count = 0
     for data in infoList:
