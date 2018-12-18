@@ -91,7 +91,7 @@ def compensate_P(adc_P):
 
 	#print("pressure : %7.2f hPa" % (pressure/100))
 
-	return pressure
+	return (pressure/100)
 
 def compensate_T(adc_T):
 	global t_fine
