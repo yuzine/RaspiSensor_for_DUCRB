@@ -1,0 +1,11 @@
+[Unit]
+Description=Raspi Sensor Daemon
+[Service]
+ExecStart=/usr/bin/python3 /home/pi/work/RaspiSensor/DHT11/api_post.py
+User=root
+Restart=always
+RestartSec=5s
+Type=simple
+PIDFile=/var/run/raspisensor.pid
+[Install]
+WantedBy=multi-user.target
