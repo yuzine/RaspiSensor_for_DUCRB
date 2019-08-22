@@ -6,6 +6,7 @@ import json
 import time
 import csv
 import ipget
+import os
 
 # initialize GPIO
 GPIO.setwarnings(False)
@@ -18,12 +19,15 @@ SERVER = ""
 DEV_UCODE = ""
 HEADERS = {'Content-type': 'application/json'}
 
+RETRY_COUNT = 0
+
 def getRaspiInfo():
     url = SERVER + "/api/" + DEV_UCODE + "/raspberrypi/info/"
     r = requests.get(url=url)
     return r.json()
 
 def postRaspiIpaddress():
+    global RETRY_COUNT
     url = SERVER + "/api/raspberrypi/ipaddress/"
     ip = ipget.ipget()
     ipaddress = ip.ipaddr("wlan0")
@@ -35,9 +39,14 @@ def postRaspiIpaddress():
 
     try:
         conn = requests.post(url=url, data=json.dumps(data), headers=HEADERS, timeout=30.0)
+        RETRY_COUNT = 0
     except:
         time.sleep(10)
-        postRaspiIpaddress()
+        if (RETRY_COUNT == 10):
+            os.system("sudo reboot")
+        else:
+            RETRY_COUNT += 1
+            postRaspiIpaddress()
 
 def readDHT11All():
     while True:
@@ -85,6 +94,7 @@ if __name__ == '__main__':
             if postData(infoList):
                 time.sleep(60)
             else:
+                postRaspiIpaddress()
                 continue
     except KeyboardInterrupt:
         pass
