@@ -37,7 +37,8 @@ def postRaspiIpaddress():
     except:
         time.sleep(10)
         if (RETRY_COUNT == 10):
-            os.system("sudo reboot")
+            os.system("sudo ifconfig wlan0 down")
+            os.system("sudo ifconfig wlan0 up")
         else:
             RETRY_COUNT += 1
             postRaspiIpaddress()
